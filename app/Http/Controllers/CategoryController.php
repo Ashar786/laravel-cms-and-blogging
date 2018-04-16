@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Post;
-use Illuminate\Http\Request;
 use App\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class postsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,8 @@ class postsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all() ;
-        return view('admin.post.index')->with('posts',$posts) ;
+        $category = Category::all() ;
+        return view('admin.category.index')->with('categories',$category) ;
     }
 
     /**
@@ -27,14 +25,8 @@ class postsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   $categories = Category::all() ;
-        if($categories->count() == 0)
-        {
-            Session::flash('info','Make sure you have atleast one category to create a post') ;
-            return redirect()->back() ;
-        }
-
-        return view('admin.post.create')->with('categories',$categories);
+    {
+        return view('admin.category.create') ;
     }
 
     /**
@@ -45,26 +37,11 @@ class postsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request ,[
-            'title' => 'required | max:255' ,
-            'featured' => 'required | image',
-            'content' => 'required',
-            'category_id' => 'required',
-        ]);
-        $featured = $request->featured;
-        $featured_new_name = time().$featured->getClientOriginalName() ;
-        $featured->move('uploads/posts' , $featured_new_name) ;
-
-        $post = Post::create([
-            'title' => $request->title,
-            'featured' => $featured_new_name,
-            'content' => $request->content,
-            'category_id' => $request->category_id,
-            'slug' => str_slug($request->title)
-
-        ]);
-        Session::flash('success','Successfully created the post') ;
-        return redirect()->back() ;
+        $category = new Category ;
+        $category->name = $request->name ;
+        $category->save() ;
+        Session::flash('success' , 'Category added successfully') ;
+          return redirect()->back() ;
     }
 
     /**
@@ -86,7 +63,9 @@ class postsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categor = Category::find($id) ;
+
+        return view('admin.category.edit')->with('categor', $categor) ;
     }
 
     /**
@@ -98,7 +77,11 @@ class postsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id) ;
+        $category->name = $request->name ;
+        $category->save ;
+
+        return redirect()->route('category') ;
     }
 
     /**
@@ -109,6 +92,8 @@ class postsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id) ;
+        $category->destroy ;
+        return redirect()->back() ;
     }
 }

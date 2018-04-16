@@ -12,8 +12,15 @@ class Post extends Model
         'title', 'content', 'category_id','featured','slug'
     ];
     protected $dates = ['deleted_at'] ;
+
+    public function getFeaturedAttribute($featured) {
+        return asset('uploads/posts/'.$featured) ;
+    }
+
     public function Category() {
 
         return $this->belongsTo('App\Category') ;
     }
+
+
 }

@@ -78,7 +78,10 @@
                                 <a href={{route('home')}}> Home</a>
                             </li>
                             <li class="list-group-item">
-                                <a href={{route('post.create')}}> create new post</a>
+                                <a href={{route('category.create')}}> Add new Category</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href={{route('post.view')}}> View post</a>
                             </li>
                             <li class="list-group-item">
                                 <a href={{route('category')}}> View Categories</a>
@@ -101,6 +104,10 @@
     <script>
         @if(Session::has('success'))
         toastr.success("{{ Session::get('success') }}")
+        @endif
+
+        @if(Session::has('info'))
+            toastr.info("{{ Session::get('info') }}")
         @endif
     </script>
 </body>
