@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="card">
-        {{--@include('admin.category.error')--}}
+        @include('admin.includes.error')
         <div class="card-header">
             Edit Category
         </div>
