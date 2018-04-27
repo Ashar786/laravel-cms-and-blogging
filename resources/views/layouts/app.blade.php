@@ -78,7 +78,7 @@
                                 <a href={{route('home')}}> Home</a>
                             </li>
                             <li class="list-group-item">
-                                <a href={{route('category.create')}}> Add new Category</a>
+                                <a href={{route('post.create')}}> Add new Post</a>
                             </li>
                             <li class="list-group-item">
                                 <a href={{route('post.view')}}> View post</a>

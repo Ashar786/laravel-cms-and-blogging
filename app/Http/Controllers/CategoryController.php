@@ -16,7 +16,14 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::all() ;
+        if (count($category) == 0)
+        {
+            Session::flash('info','there are no category present') ;
+            return redirect()->back() ;
+        }else
+        {
         return view('admin.category.index')->with('categories',$category) ;
+        }
     }
 
     /**
@@ -63,9 +70,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categor = Category::find($id) ;
+        $category = Category::where('id', $id) ;
 
-        return view('admin.category.edit')->with('categor', $categor) ;
+        return view('admin.category.edit')->with('category', $category) ;
     }
 
     /**
@@ -77,9 +84,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id) ;
+        $category = Category::where('id', $id) ;
         $category->name = $request->name ;
-        $category->save ;
+        $category->save() ;
 
         return redirect()->route('category') ;
     }
@@ -92,8 +99,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id) ;
-        $category->destroy ;
+       $category =  Category::where('id', $id);
+       $category->delete() ;
         return redirect()->back() ;
     }
 }

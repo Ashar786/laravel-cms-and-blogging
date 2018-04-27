@@ -26,10 +26,10 @@
                         {{$post->content}}
                     </td>
                     <td>
-                        {{--<a href="{{route('post.edit',['id' => $post->id])}}" ><button type="button" class="btn btn-danger">edit post</button></a>--}}
+                        {{--<a href="{{route('post.edit',['id' => $post->id])}}" ><button type="button" class="btn btn-success">edit post</button></a>--}}
                     </td>
                     <td>
-                        {{--<a href="{{route('post.delete',['id' => $post->id])}}" ><button type="button" class="btn btn-danger">delete post</button></a>--}}
+                        <a href="{{route('post.delete',['id' => $post->id])}}" class="btn btn-danger">delete post</a>
                     </td>
                 </tr>
             @endforeach
