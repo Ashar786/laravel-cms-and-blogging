@@ -86,7 +86,9 @@ class postsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id) ;
+        return view('admin.post.edit')->with('post',$post)->with('categories',Category::all()) ;
+
     }
 
     /**
@@ -98,7 +100,27 @@ class postsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request ,[
+            'title' => 'required | max:255' ,
+            'featured' => 'required | image',
+            'content' => 'required',
+            'category_id' => 'required',
+        ]);
+        $post = Post::find($id) ;
+        if($request->hasFile('featured')){
+            $featured = $request->featured;
+            $featured_new_name = time().$featured->getClientOriginalName() ;
+            $featured->move('uploads/posts' , $featured_new_name) ;
+            $post->'featured' = $featured_new_name ;
+        }
+        $post->'title' = $request->title ;
+
+
+            $post->'content' = $request->content ;
+            $post->'category_id' = $request->category_id ;
+            $post->'slug' = str_slug($request->title) ;
+            $post->save() ;
+            return $this->index() ;
     }
 
     /**
@@ -110,7 +132,25 @@ class postsController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id) ;
-        $post->destroy() ;
+        $post->delete() ;
+        return redirect()->back() ;
+    }
+
+    public function trash(){
+        $post = Post::onlyTrashed()->get() ;
+        return view('admin.post.trash')->with('posts' ,$post) ;
+    }
+    public function kill($id) {
+        $post = Post::withTrashed()->where('id',$id)->first() ;
+        $post->forceDelete() ;
+        Session::flash('success','Successfully Delete') ;
+        return redirect()->back() ;
+
+    }
+    public function restore($id){
+        $post = Post::withTrashed()->where('id',$id)->first() ;
+        $post->restore() ;
+        Session::flash('success','Successfully Restored') ;
         return redirect()->back() ;
     }
 }

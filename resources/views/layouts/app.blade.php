@@ -89,6 +89,9 @@
                             <li class="list-group-item">
                                 <a href={{route('category.create')}}> Add new Category</a>
                             </li>
+                            <li class="list-group-item">
+                                <a href={{route('post.trash')}}> View Trash</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-lg-8">
