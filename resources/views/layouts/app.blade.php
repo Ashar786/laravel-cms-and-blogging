@@ -92,6 +92,9 @@
                             <li class="list-group-item">
                                 <a href={{route('post.trash')}}> View Trash</a>
                             </li>
+                            <li class="list-group-item">
+                                <a href={{route('tags')}}> Manage Tags</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-lg-8">
