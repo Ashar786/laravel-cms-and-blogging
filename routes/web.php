@@ -108,6 +108,27 @@ Route::group(['prefix'=> 'admin' , 'middleware' => 'auth' ],function (){
         'as' => 'tag.delete'
     ]);
 
+    //User
+    Route::get('/users', [
+        'uses' => 'UsersController@index',
+        'as' => 'users'
+    ]);
+    Route::get('/user/create', [
+        'uses' => 'UsersController@create',
+        'as' => 'user.create'
+    ]);
+    Route::Post('/user/store', [
+        'uses' => 'UsersController@store',
+        'as' => 'user.store'
+    ]);
+    Route::get('/user/delete/{id}', [
+        'uses' => 'UsersController@destroy',
+        'as' => 'user.delete'
+    ]);
+    Route::get('/user/permission/{id}', [
+        'uses' => 'UsersController@admin',
+        'as' => 'user.admin'
+    ]);
 
 });
 

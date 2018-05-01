@@ -95,6 +95,10 @@
                             <li class="list-group-item">
                                 <a href={{route('tags')}}> Manage Tags</a>
                             </li>
+                            <li class="list-group-item">
+                                <a href={{route('users')}}> Manage Users</a>
+                            </li>
+
                         </ul>
                     </div>
                     <div class="col-lg-8">

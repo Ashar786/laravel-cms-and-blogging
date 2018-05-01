@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use App\Category;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +35,8 @@ class postsController extends Controller
             return redirect()->back() ;
         }
 
-        return view('admin.post.create')->with('categories',$categories);
+        return view('admin.post.create')->with('categories',$categories)
+                                                ->with('tags',Tag::all());
     }
 
     /**
@@ -50,6 +52,7 @@ class postsController extends Controller
             'featured' => 'required | image',
             'content' => 'required',
             'category_id' => 'required',
+            'tags' => 'required'
         ]);
         $featured = $request->featured;
         $featured_new_name = time().$featured->getClientOriginalName() ;
@@ -63,6 +66,7 @@ class postsController extends Controller
             'slug' => str_slug($request->title)
 
         ]);
+        $post->tags()->attach($request->tags) ;
         Session::flash('success','Successfully created the post') ;
         return redirect()->back() ;
     }
@@ -87,7 +91,9 @@ class postsController extends Controller
     public function edit($id)
     {
         $post = Post::find($id) ;
-        return view('admin.post.edit')->with('post',$post)->with('categories',Category::all()) ;
+        return view('admin.post.edit')->with('post',$post)
+                                            ->with('categories',Category::all())
+                                            ->with('tags',Tag::all());
 
     }
 
@@ -111,14 +117,15 @@ class postsController extends Controller
             $featured = $request->featured;
             $featured_new_name = time().$featured->getClientOriginalName() ;
             $featured->move('uploads/posts' , $featured_new_name) ;
-            $post->'featured' = $featured_new_name ;
+            $post->featured = $featured_new_name ;
         }
-        $post->'title' = $request->title ;
+        $post->title = $request->title ;
 
 
-            $post->'content' = $request->content ;
-            $post->'category_id' = $request->category_id ;
-            $post->'slug' = str_slug($request->title) ;
+            $post->content = $request->content ;
+            $post->category_id = $request->category_id ;
+            $post->slug = str_slug($request->title) ;
+            $post->tags()->sync($request->tags) ;
             $post->save() ;
             return $this->index() ;
     }

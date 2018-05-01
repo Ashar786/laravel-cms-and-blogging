@@ -17,7 +17,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('post.update') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('post.update',['id' => $post->id]) }}" method="post" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <div class="form-group">
                     <label for="title">Title</label>
@@ -33,13 +33,28 @@
                     <label for="category"> Select Categories</label>
                     <select name="category_id" id="category" class="form-control">
                         @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}"
+                            @if($post->Category->id == $category->id)
+                                selected
+                                    @endif
+                            >{{$category->name}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
+                    @foreach($tags as $tag)
+                        <label class="checkbox-inline"><input type="checkbox" name="tags[]" value="{{$tag->id}}"
+                            @foreach($post->tags as $t)
+                                @if($tag->id == $t->id)
+                                    checked
+                                        @endif
+                                    @endforeach
+                            >{{$tag->tag}}</label>
+                    @endforeach
+                </div>
+                <div class="form-group">
                     <label for="content">Content</label>
-                    <textarea name="content" id="content" placeholder="{{$post->content}}" cols="5" rows="5" class="form-control"></textarea>
+                    <textarea name="content" id="content" cols="5" rows="5" class="form-control">{{$post->content}}</textarea>
                 </div>
                 <div class="form-group">
                     <div class="text-center">
@@ -50,4 +65,5 @@
             </form>
         </div>
     </div>
+
 @stop
