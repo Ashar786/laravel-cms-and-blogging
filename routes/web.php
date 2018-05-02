@@ -10,10 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/test', function (){
+    return view('test');
 });
+
+Route::get('/', [
+    'uses' => 'FrontEndController@index',
+    'as' => 'index'
+]);
+Route::get('/posts/current/{slug}', [
+    'uses' => 'FrontEndController@singlePost',
+    'as' => 'post.single'
+]);
 
 Route::group(['prefix'=> 'admin' , 'middleware' => 'auth' ],function (){
     Route::get('/post/create', [
@@ -129,7 +137,25 @@ Route::group(['prefix'=> 'admin' , 'middleware' => 'auth' ],function (){
         'uses' => 'UsersController@admin',
         'as' => 'user.admin'
     ]);
+    //Profile
+    Route::get('/user/profile', [
+        'uses' => 'ProfileController@index',
+        'as' => 'profile'
+    ]);
+    Route::post('/user/profile/update', [
+        'uses' => 'ProfileController@update',
+        'as' => 'profile.update'
+    ]);
 
+    //settings
+    Route::get('/settings', [
+        'uses' => 'SettingsController@index',
+        'as' => 'settings'
+    ]);
+    Route::post('/setting/update', [
+        'uses' => 'SettingsController@update',
+        'as' => 'setting.update'
+    ]);
 });
 
 

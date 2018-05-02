@@ -21,6 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     {{--toastr--}}
     <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -64,6 +65,16 @@
                                 </div>
                             </li>
                         @endguest
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+
                     </ul>
                 </div>
             </div>
@@ -95,9 +106,18 @@
                             <li class="list-group-item">
                                 <a href={{route('tags')}}> Manage Tags</a>
                             </li>
+                                @if(Auth::user()->admin)
+                                <li class="list-group-item">
+                                    <a href={{route('users')}}> Manage Users</a>
+                                </li>
+                            @endif
                             <li class="list-group-item">
-                                <a href={{route('users')}}> Manage Users</a>
+                                <a href={{route('profile')}}> Manage Profile</a>
                             </li>
+                            <li class="list-group-item">
+                                <a href={{route('settings')}}> Settings</a>
+                            </li>
+
 
                         </ul>
                     </div>
@@ -108,6 +128,7 @@
             </div>
         </main>
     </div>
+    @yield('scripts')
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script src="{{ asset('js/toastr.min.js') }}"></script>
@@ -120,5 +141,6 @@
             toastr.info("{{ Session::get('info') }}")
         @endif
     </script>
+
 </body>
 </html>

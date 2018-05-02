@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin') ;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +50,7 @@ class UsersController extends Controller
         $user = User::create([
             'name' => $request->name ,
             'email' => $request->email,
-            'password' => bcrypt('passwprd')
+            'password' => bcrypt('password')
         ]);
         Profile::create([
             'user_id' => $user->id,
